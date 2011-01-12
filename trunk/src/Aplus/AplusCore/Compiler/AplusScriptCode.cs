@@ -1,0 +1,109 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
+using DYN = System.Dynamic;
+using DLR = System.Linq.Expressions;
+using AplusCore.Types;
+using AplusCore.Runtime;
+
+
+namespace AplusCore.Compiler
+{
+    /// <summary>
+    /// Aplus Scipt Code is responsible to invoke the DLR code generation.
+    /// 
+    /// </summary>
+    public class AplusScriptCode : ScriptCode
+    {
+        #region Variables
+
+        private Runtime.Aplus aplus;
+        //private DLR.Expression<Func<Runtime.Aplus, DYN.IDynamicMetaObjectProvider, AType>> lambda;
+        private DLR.Expression<Func<Runtime.AplusEnvironment, AType>> lambda;
+
+        #endregion
+
+        #region Constructor
+
+        public AplusScriptCode(Runtime.Aplus aplus,
+            string code,
+            SourceUnit sourceunit)
+            : base(sourceunit)
+        {
+            
+            this.aplus = aplus;
+            this.lambda = ParseToLambda(code.Trim());
+        }
+
+        #endregion
+
+        #region Script Run
+
+        public override object Run()
+        {
+            return Run(new Scope());
+        }
+
+        public override object Run(Scope scope)
+        {
+            
+            //System.Func<Runtime.Aplus, DYN.IDynamicMetaObjectProvider, AType> compiled = this.lambda.Compile();
+            //object result = compiled(this.aplus, scope);
+            Func<Runtime.AplusEnvironment, AType> compiled = this.lambda.Compile();
+            object result = compiled(new Runtime.AplusEnvironment(this.aplus, scope));
+
+            return result;
+        }
+
+        #endregion
+
+        #region Code generator
+
+        //public DLR.Expression<System.Func<Runtime.Aplus, DYN.IDynamicMetaObjectProvider, AType>> ParseToLambda(string code)
+        public DLR.Expression<System.Func<Runtime.AplusEnvironment, AType>> ParseToLambda(string code)
+        {
+            Runtime.AplusScope scope = new Runtime.AplusScope(null, "__top__", this.aplus,
+                DLR.Expression.Parameter(typeof(Runtime.Aplus), "__aplusRuntime__"),
+                DLR.Expression.Parameter(typeof(DYN.IDynamicMetaObjectProvider), "__module__"),
+                DLR.Expression.Parameter(typeof(AplusEnvironment), "__ENVIRONMENT__")
+            );
+
+            DLR.Expression codebody = null;
+            AST.Node tree = Compiler.Parse.String(code, this.aplus.LexerMode);
+
+            if (tree == null)
+            {
+                codebody = DLR.Expression.Constant(null);
+            }
+            else
+            {
+                //codebody = tree.Generate(scope);
+                codebody = DLR.Expression.Block(
+                    new DLR.ParameterExpression[] { scope.RuntimeExpression, scope.ModuleExpression },
+                    DLR.Expression.Assign(
+                        scope.RuntimeExpression, DLR.Expression.PropertyOrField(scope.AplusEnvironment, "Runtime")
+                    ),
+                    DLR.Expression.Assign(
+                        scope.ModuleExpression, DLR.Expression.PropertyOrField(scope.AplusEnvironment, "Context")
+                    ),
+                    tree.Generate(scope)
+                );
+            }
+
+            DLR.Expression<System.Func<Runtime.AplusEnvironment, AType>> method =
+                DLR.Expression.Lambda<Func<Runtime.AplusEnvironment, AType>>(
+                    codebody,
+                    scope.AplusEnvironment
+                    //scope.RuntimeExpression,
+                    //scope.ModuleExpression
+                );
+            return method;
+        }
+
+        #endregion
+    }
+}

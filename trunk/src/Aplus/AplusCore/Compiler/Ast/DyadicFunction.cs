@@ -1,0 +1,222 @@
+﻿using System;
+using System.Collections.Generic;
+using AplusCore.Compiler.Grammar;
+using DLR = System.Linq.Expressions;
+using DYN = System.Dynamic;
+using AplusCore.Runtime;
+using AplusCore.Types;
+using AplusCore.Runtime.Function.Dyadic;
+using AplusCore.Runtime.Function.Monadic;
+using AplusCore.Runtime.Function.Dyadic.NonScalar.Selection;
+
+namespace AplusCore.Compiler.AST
+{
+    public class DyadicFunction : Node
+    {
+
+        #region Variables
+
+        private Token token;
+        private Node leftExpression;
+        private Node rightExpression;
+
+        #endregion
+
+        #region Properties
+
+        public Tokens TokenType { get { return this.token.Type; } }
+        public Node Left { get { return this.leftExpression; } }
+        public Node Right { get { return this.rightExpression; } }
+
+        #endregion
+
+        #region Constructor
+
+        public DyadicFunction(Token token, Node leftExpression, Node rightExpression)
+        {
+            this.token = token;
+            this.leftExpression = leftExpression;
+            this.rightExpression = rightExpression;
+
+            MethodChooser.ConvertToDyadicToken(this.token);
+        }
+
+        #endregion
+
+        #region DLR Generator
+
+        public override DLR.Expression Generate(AplusScope scope)
+        {
+            DLR.Expression result;
+
+            if (scope.IsAssignment && TokenUtils.AllowedPrimitiveFunction(this.token.Type))
+            {
+                if (this.token.Type == Tokens.VALUEINCONTEXT || this.token.Type == Tokens.CHOOSE ||
+                    this.token.Type == Tokens.PICK)
+                {
+                    DLR.Expression left = this.leftExpression.Generate(scope);
+                    DLR.Expression right = this.rightExpression.Generate(scope);
+                    result = GenerateDyadic(scope, right, left);
+                }
+                else
+                {
+                    /*
+                     * input: y -> left side, x -> right side, value
+                     * Perform the function like this:
+                     * 
+                     * i := f{y; iota rho x}
+                     * (,x)[i] := value
+                     * 
+                     * where 'f' is the dyadic function
+                     */
+                    DLR.Expression left = this.leftExpression.Generate(scope);
+                    DLR.Expression right = Node.TestMonadicToken(this.rightExpression, Tokens.RAVEL)
+                        ? ((MonadicFunction)this.rightExpression).Expression.Generate(scope)
+                        : this.rightExpression.Generate(scope)
+                    ;
+
+                    // i:=(iota rho x)
+                    DLR.Expression indices = AST.Assign.BuildIndicesList(scope, right);
+                    // (,x)[f{a;i}]
+                    result = AST.Assign.BuildIndexing(scope, right, GenerateDyadic(scope, indices, left));
+                }
+            }
+            else
+            {
+                DLR.Expression left = this.leftExpression.Generate(scope);
+                DLR.Expression right = this.rightExpression.Generate(scope);
+                result = GenerateDyadic(scope, right, left);
+            }
+
+            return result;
+        }
+
+        private DLR.Expression GenerateDyadic(AplusScope scope, DLR.Expression right, DLR.Expression left)
+        {
+            DLR.Expression result;
+
+            DLR.ParameterExpression environment = scope.GetAplusEnvironment();
+
+            if (this.token.Type == Tokens.OR)
+            {
+                DLR.ParameterExpression leftParam = DLR.Expression.Variable(typeof(AType), "$$leftParam");
+                DLR.ParameterExpression rightParam = DLR.Expression.Variable(typeof(AType), "$$rightParam");
+                DLR.ParameterExpression valueParam = DLR.Expression.Variable(typeof(AType), "$$valueParam");
+
+                result = DLR.Expression.Block(
+                    new DLR.ParameterExpression[] { leftParam, rightParam, valueParam },
+                    DLR.Expression.Assign(rightParam, right),
+                    DLR.Expression.Assign(leftParam, left),
+                    DLR.Expression.IfThenElse(
+                    // $left.IsNumber || ($left.Type == ATypes.ANull)
+                        DLR.Expression.OrElse(
+                            DLR.Expression.IsTrue(
+                                DLR.Expression.PropertyOrField(leftParam, "IsNumber")
+                            ),
+                            DLR.Expression.Equal(
+                                DLR.Expression.PropertyOrField(leftParam, "Type"),
+                                DLR.Expression.Constant(ATypes.ANull)
+                            )
+                        ),
+                        // Or($right, $left)
+                        DLR.Expression.Assign(
+                            valueParam,
+                            DLR.Expression.Call(
+                                DLR.Expression.Constant(DyadicFunctionInstance.Or),
+                                DyadicFunctionInstance.Or.GetType().GetMethod("Execute"),
+                                rightParam, leftParam, environment
+                            )
+                        ),
+                        // Cast($right, $left)
+                        DLR.Expression.Assign(
+                            valueParam,
+                            DLR.Expression.Call(
+                                DLR.Expression.Constant(DyadicFunctionInstance.Cast),
+                                DyadicFunctionInstance.Cast.GetType().GetMethod("Execute"),
+                                rightParam, leftParam, environment
+                            )
+                        )
+                    ),
+                    valueParam
+                 );
+            }
+            else
+            {
+                AbstractDyadicFunction method = MethodChooser.GetDyadicMethod(this.token);
+
+                if (method == null)
+                {
+                    throw new ParseException(String.Format("Not supported Dyadic function[{0}]", this.token));
+                }
+
+                result = DLR.Expression.Call(
+                    DLR.Expression.Constant(method),
+                    method.GetType().GetMethod("Execute"),
+                    right, left, environment
+                );
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Overrides
+
+        public override string ToString()
+        {
+            return String.Format("Dyadic({0} {1} {2})", this.token, this.leftExpression, this.rightExpression);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DyadicFunction)
+            {
+                DyadicFunction other = (DyadicFunction)obj;
+                var tokenOk = this.token.Equals(other.token);
+                var leftOk = this.leftExpression.Equals(other.leftExpression);
+                var rightOK = this.rightExpression.Equals(other.rightExpression);
+
+                return tokenOk && leftOk && rightOK;
+
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.token.GetHashCode() ^ this.leftExpression.GetHashCode() ^ this.rightExpression.GetHashCode();
+        }
+
+        #endregion
+
+        #region GraphViz output (Only in DEBUG)
+#if DEBUG
+        private static int counter = 0;
+        internal override string ToDot(string parent, System.Text.StringBuilder textBuilder)
+        {
+            string name = String.Format("Dyadic{0}", counter++);
+            string leftName = this.leftExpression.ToDot(name, textBuilder);
+            string rightName = this.rightExpression.ToDot(name, textBuilder);
+
+            textBuilder.AppendFormat("  {0} [label=\"{1} ({2})\"];\n", name, this.token.Text, this.token.Type.ToString());
+            textBuilder.AppendFormat("  {0} -> {1};\n", name, leftName);
+            textBuilder.AppendFormat("  {0} -> {1};\n", name, rightName);
+
+            return name;
+        }
+#endif
+        #endregion
+    }
+
+    #region Construction helper
+    public partial class Node
+    {
+        public static Node DyadicFunction(Token token, Node leftExpression, Node rightExpression)
+        {
+            return new DyadicFunction(token, leftExpression, rightExpression);
+        }
+    }
+    #endregion
+}

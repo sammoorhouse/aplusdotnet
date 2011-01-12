@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="GenerateParser;Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <UseHostCompilerIfAvailable>False</UseHostCompilerIfAvailable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DC8B8C65-16A9-49FC-9819-DBCC2B8B2A5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AplusCore</RootNamespace>
+    <AssemblyName>AplusCore</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\..\lib\Antlr\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Utility">
+      <HintPath>..\..\..\lib\Antlr\Antlr3.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Dynamic">
+      <HintPath>..\..\..\lib\DLR\Net40\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting">
+      <HintPath>..\..\..\lib\DLR\Net40\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Debugging">
+      <HintPath>..\..\..\lib\DLR\Net40\Microsoft.Scripting.Debugging.dll</HintPath>
+    </Reference>
+    <Reference Include="StringTemplate">
+      <HintPath>..\..\..\lib\Antlr\StringTemplate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Compiler\AplusScriptCode.cs" />
+    <Compile Include="Compiler\Ast\Assign.cs" />
+    <Compile Include="Compiler\Ast\BuiltInFunction.cs" />
+    <Compile Include="Compiler\Ast\BuiltInOperator.cs" />
+    <Compile Include="Compiler\Ast\ControlFlow\Case.cs" />
+    <Compile Include="Compiler\Ast\ControlFlow\DyadicDo.cs" />
+    <Compile Include="Compiler\Ast\DyadicFunction.cs" />
+    <Compile Include="Compiler\Ast\ControlFlow\If.cs" />
+    <Compile Include="Compiler\Ast\Indexing.cs" />
+    <Compile Include="Compiler\Ast\ControlFlow\MonadicDo.cs" />
+    <Compile Include="Compiler\Ast\MonadicFunction.cs" />
+    <Compile Include="Compiler\Ast\Constant.cs" />
+    <Compile Include="Compiler\Ast\ConstantList.cs" />
+    <Compile Include="Compiler\Ast\Identifier.cs" />
+    <Compile Include="Compiler\Ast\Node.cs" />
+    <Compile Include="Compiler\Ast\ExpressionList.cs" />
+    <Compile Include="Compiler\Ast\Operator\EachOperator.cs" />
+    <Compile Include="Compiler\Ast\Operator\Operator.cs" />
+    <Compile Include="Compiler\Ast\Operator\RankOperator.cs" />
+    <Compile Include="Compiler\Ast\Strand.cs" />
+    <Compile Include="Compiler\Ast\SystemCommand.cs" />
+    <Compile Include="Compiler\Ast\UserDefFunction.cs" />
+    <Compile Include="Compiler\Ast\ControlFlow\While.cs" />
+    <Compile Include="Compiler\Ast\Token.cs" />
+    <Compile Include="Compiler\Ast\UserDefInvoke.cs" />
+    <Compile Include="Compiler\Ast\MethodChooser.cs" />
+    <Compile Include="Compiler\Grammar\Apl\AplusLexer.cs">
+      <DependentUpon>AplusLexer.g</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Compiler\Grammar\StringProcessor.cs" />
+    <Compile Include="Compiler\Grammar\Tokens.cs" />
+    <Compile Include="Compiler\Parse.cs" />
+    <Compile Include="Compiler\ParseException.cs" />
+    <Compile Include="Compiler\VariableHelper.cs" />
+    <Compile Include="Hosting\AplusCommandLine.cs" />
+    <Compile Include="Hosting\AplusConsoleHost.cs" />
+    <Compile Include="Hosting\AplusConsoleOptions.cs" />
+    <Compile Include="Hosting\AplusOptionsParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Compiler\Grammar\Ascii\AplusLexer.cs">
+      <Autogen>True</Autogen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AplusLexer.g</DependentUpon>
+    </Compile>
+    <Compile Include="Compiler\Grammar\AplusParser.cs">
+      <Autogen>True</Autogen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AplusParser.g</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\Aplus.cs" />
+    <Compile Include="Runtime\AplusEnvironment.cs" />
+    <Compile Include="Runtime\AplusLanguageContext.cs" />
+    <Compile Include="Runtime\AplusScope.cs" />
+    <Compile Include="Runtime\Binder\ConvertBinder.cs" />
+    <Compile Include="Runtime\Binder\GetIndexBinder.cs" />
+    <Compile Include="Runtime\Binder\GetMemberBinder.cs" />
+    <Compile Include="Runtime\Binder\InvokeBinder.cs" />
+    <Compile Include="Runtime\Binder\SetIndexBinder.cs" />
+    <Compile Include="Runtime\Binder\SetMemberBinder.cs" />
+    <Compile Include="Runtime\Error.cs" />
+    <Compile Include="Runtime\Function\Dyadic\AbstractDyadicFunction.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Comparison\Bins.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Comparison\Find.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Comparison\Match.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Comparison\Member.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Computational\Deal.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Computational\Decode.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Computational\Encode.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Other\Cast.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Other\ExecuteInContext.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Other\Format.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Other\ValueInContext.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Selection\Choose.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Selection\Left.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Selection\Pick.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Catenate.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Drop.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Expand.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Laminate.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Partition.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Replicate.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Reshape.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Restructure.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Rotate.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\Take.cs" />
+    <Compile Include="Runtime\Function\Dyadic\NonScalar\Structural\TransposeAxes.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\IPAddMultiply.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\IPMaxAdd.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\IPMinAdd.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPAdd.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPDivide.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPEqual.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPGraterEqual.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPGreater.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPLess.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPLessEqual.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPMax.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPMin.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPMultiply.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPNotEqual.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPPower.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPResidue.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OPSubtract.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\OuterProduct.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Arithmetic\Add.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Arithmetic\Divide.cs" />
+    <Compile Include="Runtime\Function\Dyadic\DyadicScalar.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Arithmetic\Multiply.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Arithmetic\Subtract.cs" />
+    <Compile Include="Runtime\Function\Dyadic\DyadicFunctionInstance.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Bitwise\BitwiseAnd.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Bitwise\BitwiseEqual.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Bitwise\BitwiseGreater.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Bitwise\BitwiseGreaterEqual.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Bitwise\BitwiseLess.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Bitwise\BitwiseLessEqual.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Bitwise\BitwiseNotEqual.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Bitwise\BitwiseOr.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\DyadicScalarAttribute.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Elementary\Power.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Logical\And.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Logical\Or.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Elementary\Circle.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Elementary\Log.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Miscellaneous\CombineSymbols.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Miscellaneous\Max.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Miscellaneous\Min.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Miscellaneous\Residue.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Relational\EqualTo.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Relational\GreaterThan.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Relational\GreaterThanOrEqualTo.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Relational\LessThan.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Relational\LessThanOrEqualTo.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Scalar\Relational\NotEqualTo.cs" />
+    <Compile Include="Runtime\Function\Monadic\MonadicFunctionInstance.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Comprasion\GradeDown.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Comprasion\GradeUp.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Comprasion\PartitionCount.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Computational\Pack.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Computational\Unpack.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Other\DefaultFormat.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Informational\Count.cs" />
+    <Compile Include="Runtime\Function\Monadic\AbstractMonadicFunction.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Informational\Depth.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Informational\Shape.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Informational\TypeFunction.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Other\Execute.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Other\Print.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Other\Signal.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Other\Stop.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Other\Value.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Selection\NullFunction.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Selection\Right.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Selection\SeparateSymbols.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\Disclose.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\Enclose.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\Interval.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\ItemRavel.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\Rake.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\Ravel.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\Raze.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\Reverse.cs" />
+    <Compile Include="Runtime\Function\Monadic\NonScalar\Structural\Transpose.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Reduction\ReduceAdd.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Reduction\ReduceAnd.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Reduction\ReduceMax.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Reduction\ReduceMin.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Reduction\ReduceMultiply.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Reduction\ReduceOr.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Reduction\Reduction.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Scan\Scan.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Scan\ScanAdd.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Scan\ScanAnd.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Scan\ScanMax.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Scan\ScanMin.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Scan\ScanMultiply.cs" />
+    <Compile Include="Runtime\Function\Monadic\Operator\Scan\ScanOr.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Arithmetic\Identity.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Arithmetic\Negate.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Arithmetic\Reciprocal.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Logical\Not.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Miscellaneous\AbsoluteValue.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Miscellaneous\BitwiseNot.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Miscellaneous\Ceiling.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Elementary\Exponential.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Miscellaneous\Floor.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Elementary\NaturalLog.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Elementary\PiTimes.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Miscellaneous\Roll.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\Miscellaneous\Sign.cs" />
+    <Compile Include="Runtime\Function\Monadic\Scalar\MonadicScalar.cs" />
+    <Compile Include="Runtime\Function\Operator\Dyadic\Apply.cs" />
+    <Compile Include="Runtime\Function\Operator\Dyadic\DyadicOperatorInstance.cs" />
+    <Compile Include="Runtime\Function\Operator\Dyadic\Each.cs" />
+    <Compile Include="Runtime\Function\Dyadic\Product\InnerProduct.cs" />
+    <Compile Include="Runtime\Function\Operator\Dyadic\Rank.cs" />
+    <Compile Include="Runtime\Function\Operator\Monadic\Apply.cs" />
+    <Compile Include="Runtime\Function\Operator\Monadic\Each.cs" />
+    <Compile Include="Runtime\Function\Operator\Monadic\MonadicOperatorInstance.cs" />
+    <Compile Include="Runtime\Function\Operator\Monadic\Rank.cs" />
+    <Compile Include="Runtime\Helpers.cs" />
+    <Compile Include="Runtime\StopException.cs" />
+    <Compile Include="Runtime\SystemCommands.cs" />
+    <Compile Include="Runtime\SystemVariables.cs" />
+    <Compile Include="Runtime\Util.cs" />
+    <Compile Include="Types\AArray.cs" />
+    <Compile Include="Types\ABox.cs" />
+    <Compile Include="Types\AReference.cs" />
+    <Compile Include="Types\AValue.cs" />
+    <Compile Include="Types\AFunc.cs" />
+    <Compile Include="Types\ANull.cs" />
+    <Compile Include="Types\AChar.cs" />
+    <Compile Include="Types\ASymbol.cs" />
+    <Compile Include="Types\AType.cs" />
+    <Compile Include="Types\AInteger.cs" />
+    <Compile Include="Types\AFloat.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Types\Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Antlr3 Include="Compiler\Grammar\Ascii\AplusLexer.g">
+      <OutputFiles>Compiler\Grammar\Ascii\AplusLexer.cs</OutputFiles>
+    </Antlr3>
+    <Antlr3 Include="Compiler\Grammar\AplusParser.g">
+      <OutputFiles>AplusParser.cs</OutputFiles>
+    </Antlr3>
+    <Antlr3 Include="Compiler\Grammar\Apl\AplusLexer.g">
+      <OutputFiles>Compiler\Grammar\Apl\AplusLexer.cs</OutputFiles>
+    </Antlr3>
+  </ItemGroup>
+  <ItemGroup />
+  <!-- ANTLR HACK #3 Antlr generator :) -->
+  <Target Name="GenerateParser" Inputs="@(Antlr3)" Outputs="%(Antlr3.OutputFiles)">
+    <!-- <Message Text="$(MSBuildProjectDirectory)"/> -->
+    <Exec Command="java -cp ..\..\..\tool\antlrworks-1.3.1.jar org.antlr.Tool -message-format vs2005 @(Antlr3)" />
+  </Target>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
