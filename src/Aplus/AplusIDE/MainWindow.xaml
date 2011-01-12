@@ -1,0 +1,79 @@
+﻿<Window x:Class="AplusIDE.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="640" Width="800"
+        Loaded="Window_Loaded" Name="Window"
+        >
+
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <!-- menu :) -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="APL" Grid.Column="1" 
+                   Height="28" HorizontalAlignment="Right" Margin="0,6,12,0" 
+                   Name="ModeLabel" VerticalAlignment="Top" Width="60" 
+                   BorderThickness="1"  BorderBrush="#50000000"
+                   MouseUp="ModeLabel_MouseUp"/>
+
+            <Label Content=" Execute" Height="28" 
+                   HorizontalAlignment="Right" Margin="0,6,0,0" Name="ExecuteLabel" 
+                    BorderThickness="1"  BorderBrush="#50000000"
+                   VerticalAlignment="Top" Width="62"
+                   MouseUp="ExecuteLabel_MouseUp"/>
+            
+            <Label BorderBrush="#50000000" BorderThickness="1" 
+                   Content="  Load" Height="28" 
+                   HorizontalAlignment="Left" Margin="12,6,0,0" 
+                   Name="LoadLabel" VerticalAlignment="Top" Width="62"
+                   MouseUp="LoadLabel_MouseUp"/>
+            
+            <Label BorderBrush="#50000000" BorderThickness="1" 
+                   Content="  Save as" Height="28" 
+                   HorizontalAlignment="Left" Margin="80,6,0,0" 
+                   Name="SaveLabel" VerticalAlignment="Top" Width="62" 
+                   MouseUp="SaveLabel_MouseUp"/>
+        </Grid>
+
+        <!-- TextBox for code editor -->
+        <TextBox Grid.Row="1"
+            HorizontalAlignment="Stretch" Name="codeBox"
+            VerticalAlignment="Stretch" AcceptsReturn="True" Cursor="IBeam" 
+            HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+            AcceptsTab="True" Margin="12,0" 
+            FontFamily=".#KAPL" FontSize="14"
+            KeyDown="codeBox_KeyDown" />
+
+        <!--
+            <GridSplitter Grid.Row="2" 
+                      Height="5" HorizontalAlignment="Stretch" Margin="12,0" 
+                      Name="gridSplitter1" VerticalAlignment="Top" ResizeDirection="Rows" />
+        -->
+
+        <Expander Grid.Row="3" Header="Result" 
+                  HorizontalAlignment="Stretch" 
+                  Margin="12,0" Name="AnimatedExpander" 
+                  VerticalAlignment="Bottom" ExpandDirection="Up" 
+                  Expanded="AnimatedExpander_Expanded"
+                  Collapsed="AnimatedExpander_Collapsed" BorderBrush="#50000000" IsExpanded="False">
+            <StackPanel VerticalAlignment="Top" Height="100" >
+                    <TextBlock Name="ResultTextBox"
+                        FontFamily=".#KAPL"
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,3,0,0">
+                    </TextBlock>
+            </StackPanel>
+
+        </Expander>
+
+    </Grid>
+</Window>

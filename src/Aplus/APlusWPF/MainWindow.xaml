@@ -1,0 +1,22 @@
+﻿<Window x:Class="APlusWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
+    <Grid Grid.Column="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <ScrollViewer Name="scrollViewer" Grid.Column="1" >
+            <TextBlock FontFamily="./resources/#KAPL" Name="txtOutput"
+                       HorizontalAlignment="Stretch" Text="Top Section" VerticalAlignment="Stretch"
+                       FontSize="14"/>
+        </ScrollViewer>
+        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
+        <TextBox FontFamily="./resources/#KAPL" Name="txtInput" Grid.Row="2"
+                 HorizontalAlignment="Stretch" Text="Bottom Section" VerticalAlignment="Stretch"
+                 TextWrapping="WrapWithOverflow" KeyDown="txtInput_KeyDown"
+                 FontSize="14"/>
+    </Grid>
+</Window>
