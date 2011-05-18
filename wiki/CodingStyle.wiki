@@ -1,0 +1,202 @@
+#summary Coding style for the A+.NET project
+
+= Coding style =
+
+== General ==
+
+Curly brackets ({}) are always in a new line.
+
+----
+== Using directive ==
+Use alphabetical order.
+Group them by:
+ # .NET Framework namespaces
+ # 3rd party namespaces
+ # Project's namespaces
+ # Aliases for namespaces
+
+
+Example:
+{{{
+using System;
+using System.Linq;
+
+using Tool.A;
+using Tool.B;
+
+using MyProject.A;
+using MyProject.B;
+
+using A = MyProject.A;
+}}}
+
+----
+
+== Regions ==
+==== Keep one empty line after `#region` and before `#endregion` ====
+
+==== Good: ====
+{{{
+class A
+{
+    #region outer
+
+    public void MyFunc()
+    {
+        ....
+    }
+
+    #endregion
+}
+}}}
+
+Bad:
+{{{
+class A
+{
+    #region outer
+    public void MyFunc()
+    {
+        ....
+    }
+    #endregion
+}
+
+}}}
+
+==== Do not indent nested regions. ====
+
+==== Good: ====
+{{{
+class A
+{
+    #region outer
+    #region inner
+    #endregion
+    #endregion
+}
+}}}
+
+Bad:
+{{{
+class A
+{
+    #region outer
+        #region inner
+        #endregion
+    #endregion
+}
+}}}
+
+----
+
+== Properties ==
+
+==== If both get and set is a one-liner. ====
+
+====Good:====
+{{{
+public int PropertyA()
+{
+    get { return variableA; }
+    set { variableA = value; }
+}
+}}}
+
+Bad:
+{{{
+public int PropertyA()
+{
+    get { return variableA; }
+    set
+    { 
+         variableA = value; 
+    }
+}
+}}}
+
+
+==== If get or set is not a one-liner. ====
+Keep an empty line between the get and set.
+
+==== Good: ====
+{{{
+public int PropertyA()
+{
+    get
+    {
+        return variableA;
+    }
+
+    set
+    { 
+        DoBThing();
+        variableA = value; 
+    }
+}
+}}}
+
+Bad:
+{{{
+public int PropertyA()
+{
+    get { return variableA; }
+    set
+    { 
+        DoBThing();
+        variableA = value; 
+    }
+}
+}}}
+
+----
+
+== Control flow ==
+Always use curly brackets {}. This applies to _if_, _foreach_ etc.
+
+==== Good: ====
+{{{
+if(condition)
+{
+    SingeLineStatement();
+}
+}}}
+
+Bad:
+{{{
+if(condition)
+    SingeLineStatement();
+}}}
+
+
+== If-else and if-else if  ==
+_else_ and _else if_ goes to a new line.
+
+==== Good: ====
+{{{
+if(conditionA)
+{
+    ...
+}
+else if(conditionB)
+{
+    ...
+}
+else
+{
+    ...
+}
+}}}
+
+Bad:
+{{{
+if(conditionA)
+{
+    ...
+} else if(conditionB) {
+    ...
+} 
+else {
+    ...
+}
+}}}
