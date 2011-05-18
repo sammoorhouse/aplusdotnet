@@ -13,7 +13,7 @@ Group them by:
  # 3rd party namespaces
  # Project's namespaces
  # Aliases for namespaces
-
+keep an empty line between groups.
 
 Example:
 {{{
