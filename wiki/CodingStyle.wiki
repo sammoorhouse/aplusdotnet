@@ -1,13 +1,12 @@
 #summary Coding style for the A+.NET project
+<wiki:toc max_depth="2" />
 
-= Coding style =
-
-== General ==
+= General =
 
 Curly brackets ({}) are always in a new line.
 
 ----
-== Using directive ==
+= Using directive =
 Use alphabetical order.
 Group them by:
  # .NET Framework namespaces
@@ -32,7 +31,7 @@ using A = MyProject.A;
 
 ----
 
-== Regions ==
+= Regions =
 ==== Keep one empty line after `#region` and before `#endregion` ====
 
 ==== Good: ====
@@ -90,7 +89,7 @@ class A
 
 ----
 
-== Properties ==
+= Properties =
 
 ==== If both get and set is a one-liner. ====
 
@@ -151,7 +150,7 @@ public int PropertyA()
 
 ----
 
-== Control flow ==
+= Control flow =
 Always use curly brackets {}. This applies to _if_, _foreach_ etc.
 
 ==== Good: ====
