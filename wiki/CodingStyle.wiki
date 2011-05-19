@@ -199,3 +199,22 @@ else {
     ...
 }
 }}}
+
+----
+
+= Comments =
+
+== Single line ==
+==== Single line comments starts with a space and lower cased letter. Also no dot at the end. ====
+
+==== Good: ====
+{{{
+// good comment
+DoesThis();
+}}}
+
+Bad:
+{{{
+//Bad comment.
+DoesOther();
+}}}
