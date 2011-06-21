@@ -32,6 +32,28 @@ using A = MyProject.A;
 ----
 
 = Regions =
+==== Keep the following order for regions and one empty line between regions. ====
+{{{
+class A
+{
+    #region Variables
+    ....
+    #endregion
+
+    #region Properties
+    ....
+    #endregion
+
+    #region Constructors
+    ....
+    #endregion
+
+    #region [Other regions..]
+    ....
+    #endregion    
+}
+}}}
+
 ==== Keep one empty line after `#region` and before `#endregion` ====
 
 ==== Good: ====
