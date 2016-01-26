@@ -1,0 +1,1 @@
+A+ is a proprietary, array-based programming language developed and maintained at Morgan Stanley. A+.Net is a version of the language targeting the .Net CLR. For more information about the A+ language see http://www.aplusdev.org/
